@@ -10,6 +10,20 @@
     <script>
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
+    <script>
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          alert( "Geolocation is not supported by this browser.");
+        }
+      }
+
+      function addPosition(position) {
+        let animal = document.getElementById("animal")
+        animal.setAttribute('gps-entity-place',"longitude: "+position.coords.longitude+"; latitude: "+position.coords.latitude)
+      }
+    </script>
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
@@ -19,6 +33,6 @@
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
         
         <a-camera gps-camera rotation-reader></a-camera>
-        <a-entity gltf-model="./assets/dog/scene.gltf" rotation="0 180 0" scale="0.15 0.15 0.15" gps-entity-place="longitude: 76.8836149; latitude: 31.5295255;" animation-mixer/>
+        <a-entity id="animal" gltf-model="./assets/dog/scene.gltf" rotation="0 180 0" scale="0.15 0.15 0.15" gps-entity-place="longitude: 76.8836149; latitude: 31.5295255;" animation-mixer/>
 	</a-scene>
 </body>
