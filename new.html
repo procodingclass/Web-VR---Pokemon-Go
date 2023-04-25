@@ -4,6 +4,8 @@
     <title>AR.js Pokemon go</title>
     <!-- A-Frame itself -->
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
 
     <!-- Pure three.js code that the A-Frame components use for location-based AR -->
     <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
@@ -38,11 +40,11 @@
 		    embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
         
-        <a-camera gps-camera rotation-reader>
-          <a-entity  visible="true" gltf-model="models/cat/scene.gltf"  rotation="0 0 0" scale="0.01 0.01 0.01" animation-mixer="" position="0 0 -0.6">
+        <a-camera gps-camera rotation-reader position="0 5 35">
+          <a-entity  visible="true" gltf-model="models/cat/scene.gltf"  rotation="0 0 0" scale="1 1 1" position="0 0 -120" animation-mixer="" >
           </a-entity>
         </a-camera>
-        <a-entity id="animal" gltf-model="models/dog/scene.gltf" rotation="0 0 0" scale="0.01 0.01 0.01" gps-entity-place="longitude: 76.8836149; latitude: 31.5295255;" animation-mixer/>
+        <a-entity id="animal" gltf-model="models/dog/scene.gltf" rotation="0 0 0" scale="1 1 1" gps-entity-place="longitude: 0; latitude: 0;" animation-mixer/>
 	</a-scene>
 </body>
 
