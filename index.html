@@ -5,118 +5,164 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
     
-     <!-- Pure three.js code that the A-Frame components use for location-based AR -->
-     <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-
-     <!-- AR.js A-Frame components -->
-     <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
- 
+    <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
+    <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
     <script>
-        catAnimations = ['IdleNorm', 'WalkCycle', 'IdleTailSwoosh', 'SitDown', 'IdleSit', 'StandUp']
-        dogAnimations = ['Idle1', 'WalkCycle', 'IdleTailSwoosh', 'SitDown', 'IdleSit', 'StandUp', 'RunCycle','SitScratchEar',  'LayDown', 'SitUp', 'StandUp', 'IdleEarTwitch', 'Jump']
-        horseAnimations = ['Idle1' ]
-
-        commands=["run", "stand", "sit", "walk"]
-
-        function spawn(animal){
-            var el = document.querySelector("#animal");
-            el.setAttribute("visible", "false")
-            setTimeout(()=>{showAnimal(el, animal)}, 10);
-            
-            //EventListener
-            el.addEventListener('animation-finished', (event)=>{
-                let idleAnimation
-                if(animal=="models/horse/scene.gltf")
-                {
-                    idleAnimation = horseAnimations[0]
-                }
-                else if(animal=="models/dog/scene.gltf")
-                {
-                    idleAnimation = dogAnimations[0]
-                }
-                else if(animal=="models/cat/scene.gltf")
-                {
-                    idleAnimation = catAnimations[0]
-                }
-                animationMixer = "clip:" + idleAnimation
-                el.setAttribute("animation-Mixer", animationMixer)
-            });
-
+        function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(addPosition);
+          } else {
+            alert( "Geolocation is not supported by this browser.");
+          }
         }
+  
+        function addPosition(position) {
+          
+          alert(position.coords.longitude);
+          alert(position.coords.latitude);
+          //let animal = document.getElementById("animal")
+          //animal.setAttribute('gps-entity-place',"longitude: "+position.coords.longitude+"; latitude: "+position.coords.latitude)
+        }
+  
+      </script>
+    
+    
+    <script>
+        // catAnimations = ['IdleNorm', 'WalkCycle', 'IdleTailSwoosh', 'SitDown', 'IdleSit', 'StandUp']
+        // dogAnimations = ['Idle1', 'WalkCycle', 'IdleTailSwoosh', 'SitDown', 'IdleSit', 'StandUp', 'RunCycle','SitScratchEar',  'LayDown', 'SitUp', 'StandUp', 'IdleEarTwitch', 'Jump']
+        // horseAnimations = ['Idle1' ]
 
-        function showAnimal(el, animal){
-            if(animal=="models/horse/scene.gltf")
-            {
-                animation="property: position;from:270 65 -25; to: 270 65 -105; dur: 2000; easing: linear;";
-                scale = '0.1 0.1 0.1';
-                position= '270 65 -25';
-                animationMixer = "clip:"+ horseAnimations[0]+"; repetitions: 4"
-                controls= horseAnimations
-            }
-            else if(animal=="models/cat/scene.gltf")
-            {
-                animation="property: position; from:270 22 -24; to: 270 22 -105; dur: 4000; easing: linear; loop: false"
-                scale = '1 1 1'
-                position= '270 22 -25'
-                animationMixer = "clip:" + catAnimations[1]+"; repetitions: 4"
-                controls= catAnimations
-            }
-            else if(animal=="models/dog/scene.gltf" )
-            {
-                animation="property: position; from: 270 22 -25; to: 270 22 -105; dur: 4000; easing: linear; loop: false"
-                scale = '1 1 1'
-                position= '270 22 -25'
-                animationMixer = "clip:"+ dogAnimations[1]+"; repetitions: 4"
-                controls= dogAnimations
-            }  
-            
-            // Setting the current Aniamtion property
-            el.setAttribute("animation-Mixer", animationMixer)
-            el.setAttribute("scale", scale)
-            el.setAttribute("position", position)
-            el.setAttribute("animation", animation)
+        // commands=["run", "stand", "sit", "walk"]
 
-            el.setAttribute("gltf-model", animal)
-            el.setAttribute("visible", "true")
+        // function spawn(animal){
+        //     var el = document.querySelector("#animal");
+        //     el.setAttribute("visible", "false")
+        //     setTimeout(()=>{showAnimal(el, animal)}, 10);
             
-            pos= 100
-            
-            animal = document.getElementById('animal')
-            animal.innerHTML=''
+        //     //EventListener
+        //     el.addEventListener('animation-finished', (event)=>{
+        //         let idleAnimation
+        //         if(animal=="models/horse/scene.gltf")
+        //         {
+        //             idleAnimation = horseAnimations[0]
+        //         }
+        //         else if(animal=="models/dog/scene.gltf")
+        //         {
+        //             idleAnimation = dogAnimations[0]
+        //         }
+        //         else if(animal=="models/cat/scene.gltf")
+        //         {
+        //             idleAnimation = catAnimations[0]
+        //         }
+        //         animationMixer = "clip:" + idleAnimation
+        //         el.setAttribute("animation-Mixer", animationMixer)
+        //     });
 
-            commands.forEach(command => {
-                var aPlane = document.createElement('a-plane');
-                 aPlane.setAttribute("class", "clickable");
-                 aPlane.setAttribute("color", "black");
-                 aPlane.setAttribute("width", "3");
-                 aPlane.setAttribute("height", "1");
-                 aPlane.setAttribute("position", "0 "+ pos +" -6");
-                 aPlane.setAttribute("scale", "10 10 10");
-                 //aPlane.setAttribute("onclick", "perfomCommand('"+control+"')")
-                 aPlane.setAttribute("onclick", "perfomCommand('"+command+"')")
+        // }
+
+        // function showAnimal(el, animal){
+        //     if(animal=="models/horse/scene.gltf")
+        //     {
+        //         animation="property: position;from:270 65 -25; to: 270 65 -105; dur: 2000; easing: linear;";
+        //         scale = '0.1 0.1 0.1';
+        //         position= '270 65 -25';
+        //         animationMixer = "clip:"+ horseAnimations[0]+"; repetitions: 4"
+        //         controls= horseAnimations
+        //     }
+        //     else if(animal=="models/cat/scene.gltf")
+        //     {
+        //         animation="property: position; from:270 22 -24; to: 270 22 -105; dur: 4000; easing: linear; loop: false"
+        //         scale = '1 1 1'
+        //         position= '270 22 -25'
+        //         animationMixer = "clip:" + catAnimations[1]+"; repetitions: 4"
+        //         controls= catAnimations
+        //     }
+        //     else if(animal=="models/dog/scene.gltf" )
+        //     {
+        //         animation="property: position; from: 270 22 -25; to: 270 22 -105; dur: 4000; easing: linear; loop: false"
+        //         scale = '1 1 1'
+        //         position= '270 22 -25'
+        //         animationMixer = "clip:"+ dogAnimations[1]+"; repetitions: 4"
+        //         controls= dogAnimations
+        //     }  
+            
+        //     // Setting the current Aniamtion property
+        //     el.setAttribute("animation-Mixer", animationMixer)
+        //     el.setAttribute("scale", scale)
+        //     el.setAttribute("position", position)
+        //     el.setAttribute("animation", animation)
+
+        //     el.setAttribute("gltf-model", animal)
+        //     el.setAttribute("visible", "true")
+            
+        //     pos= 100
+            
+        //     animal = document.getElementById('animal')
+        //     animal.innerHTML=''
+
+        //     commands.forEach(command => {
+        //         var aPlane = document.createElement('a-plane');
+        //          aPlane.setAttribute("class", "clickable");
+        //          aPlane.setAttribute("color", "black");
+        //          aPlane.setAttribute("width", "3");
+        //          aPlane.setAttribute("height", "1");
+        //          aPlane.setAttribute("position", "0 "+ pos +" -6");
+        //          aPlane.setAttribute("scale", "10 10 10");
+        //          //aPlane.setAttribute("onclick", "perfomCommand('"+control+"')")
+        //          aPlane.setAttribute("onclick", "perfomCommand('"+command+"')")
                     
-                 var aText =  document.createElement('a-text');
-                 aText.setAttribute("Value", command);
-                 aText.setAttribute("position", "-1.2 0 0");
+        //          var aText =  document.createElement('a-text');
+        //          aText.setAttribute("Value", command);
+        //          aText.setAttribute("position", "-1.2 0 0");
                  
-                aPlane.appendChild(aText)
-                animal.appendChild(aPlane)
-                pos=pos-7
-            });
+        //         aPlane.appendChild(aText)
+        //         animal.appendChild(aPlane)
+        //         pos=pos-7
+        //     });
 
-        }
+        // }
 
-        function perfomCommand(animation){
-            var el = document.querySelector("#animal");
-            if(command=="walk")
-            {
+        // function perfomCommand(animation){
+        //     var el = document.querySelector("#animal");
+        //     if(command=="walk")
+        //     {
                
-            }
-            animationMixer = "clip:"+ animation +"; repetitions: 1"
-            el.setAttribute("animation-Mixer", animationMixer)
-        }
+        //     }
+        //     animationMixer = "clip:"+ animation +"; repetitions: 1"
+        //     el.setAttribute("animation-Mixer", animationMixer)
+        // }
         
+    window.onload = () => {
+        let testEntityAdded = false;
+        alert("creating new object")
+        const el = document.querySelector("[gps-new-camera]");
+
+        el.addEventListener("gps-camera-update-position", e => {
+            if(!testEntityAdded) {
+                alert(`Got first GPS position: lon ${e.detail.position.longitude} lat ${e.detail.position.latitude}`);
+                // Add a box to the north of the initial GPS position
+                const entity = document.createElement("a-box");
+                entity.setAttribute("scale", {
+                    x: 20, 
+                    y: 20,
+                    z: 20
+                });
+                entity.setAttribute('material', { color: 'red' } );
+                entity.setAttribute('gps-new-entity-place', {
+                    latitude: e.detail.position.latitude + 0.001,
+                    longitude: e.detail.position.longitude
+                });
+                document.querySelector("a-scene").appendChild(entity);
+            }
+            testEntityAdded = true;
+        });
+        
+        alert("End")
+        
+        getLocation()
+    };
     </script>
+    
   </head>
   <body>
     <a-scene  vr-mode-ui="enabled: false"
@@ -138,12 +184,11 @@
         <!--
         <a-entity environment="preset:forest; lightPosition: 0 1000 0;" ></a-entity>
          -->
-        <!--Model of the cafe-->
-        <a-entity gltf-model="#cafe" scale=".07 .07 .07" position="-10 -1.3 10" >
-            <!--Adding menutext-->
-            <a-entity position="275 105 -210" rotation="0 -90 0" scale="10 10 10" >
-                <a-camera position='0 0 5' gps-camera rotation-reader position="0 5 35">
-                </a-camera> 
+         
+         <a-camera gps-new-camera='gpsMinDistance: 5'>
+        </a-camera> 
+
+            <a-entity position="0 0 0" rotation="0 0 0" >
                 <a-plane class="clickable" color="black" width="3" height="1">
                    <a-text value="Select Item from Menu" position="-1.2 0 0"></a-text>
                 </a-plane> 
@@ -159,11 +204,10 @@
                 
             </a-entity> 
             <!--Model of the animal-->
-            <a-entity id="animal" visible="false" gltf-model="#cat" position="270 22 -25" rotation="0 180 0" animation-mixer="" >
+            <a-entity id="animal" visible="true" gltf-model="#cat" position="0 0 0" rotation="0 0 0" scale="0.1 0.1 0.1" animation-mixer="" >
                 
             </a-entity>
 
-        </a-entity>
     </a-scene>
   </body>
 </html>
