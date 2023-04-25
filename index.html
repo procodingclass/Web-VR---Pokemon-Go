@@ -18,12 +18,15 @@
   
         function addPosition(position) {
           
-          alert(position.coords.longitude);
-          alert(position.coords.latitude);
-          //let animal = document.getElementById("animal")
+          let animal = document.getElementById("animal")
+          loc = "longitude: "+position.coords.longitude+"; latitude: "+position.coords.latitude-0.01
+          animal.setAttribute('gps-new-entity-place', loc)
+
+        //let animal = document.getElementById("animal")
           //animal.setAttribute('gps-entity-place',"longitude: "+position.coords.longitude+"; latitude: "+position.coords.latitude)
         }
   
+        window.onload = () => { getLocation()}
       </script>
     
     
@@ -132,47 +135,18 @@
         //     el.setAttribute("animation-Mixer", animationMixer)
         // }
         
-    window.onload = () => {
-        let testEntityAdded = false;
-        alert("creating new object")
-        const el = document.querySelector("[gps-new-camera]");
-
-        el.addEventListener("gps-camera-update-position", e => {
-            if(!testEntityAdded) {
-                alert(`Got first GPS position: lon ${e.detail.position.longitude} lat ${e.detail.position.latitude}`);
-                // Add a box to the north of the initial GPS position
-                const entity = document.createElement("a-box");
-                entity.setAttribute("scale", {
-                    x: 20, 
-                    y: 20,
-                    z: 20
-                });
-                entity.setAttribute('material', { color: 'red' } );
-                entity.setAttribute('gps-new-entity-place', {
-                    latitude: e.detail.position.latitude + 0.001,
-                    longitude: e.detail.position.longitude
-                });
-                document.querySelector("a-scene").appendChild(entity);
-            }
-            testEntityAdded = true;
-        });
-        
-        alert("End")
-        
-        getLocation()
-    };
+ 
     </script>
     
   </head>
   <body>
-    <a-scene  vr-mode-ui="enabled: false"
-    embedded
-    arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
-
-        <a-entity
+    <a-scene vr-mode-ui='enabled: false' 
+             arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' 
+             renderer='antialias: true; alpha: true'>
+        <!--<a-entity
             raycaster="objects: .clickable"
             cursor="rayOrigin: mouse"> 
-        </a-entity>
+        </a-entity>-->
         <a-assets>
             <a-asset-item id="cat" src="models/cat/scene.gltf"></a-asset-item>
             <a-asset-item id="dog" src="models/dog/scene.gltf"></a-asset-item>
@@ -185,8 +159,8 @@
         <a-entity environment="preset:forest; lightPosition: 0 1000 0;" ></a-entity>
          -->
          
-         <a-camera gps-new-camera='gpsMinDistance: 5'>
-        </a-camera> 
+         <a-camera gps-new-camera='gpsMinDistance: 1'>
+         </a-camera> 
 
             <a-entity position="0 0 0" rotation="0 0 0" >
                 <a-plane class="clickable" color="black" width="3" height="1">
@@ -204,7 +178,8 @@
                 
             </a-entity> 
             <!--Model of the animal-->
-            <a-entity id="animal" visible="true" gltf-model="#cat" position="0 0 0" rotation="0 0 0" scale="0.1 0.1 0.1" animation-mixer="" >
+            <a-entity id="animal" visible="true" gltf-model="#cat"  rotation="0 0 0" scale="1 1 1" animation-mixer="" 
+                    gps-new-entity-place="latitude: 31.5195749; longitude: 76.8793439">
                 
             </a-entity>
 
