@@ -20,6 +20,9 @@
       }
 
       function addPosition(position) {
+        
+        alert(position.coords.longitude);
+        alert(position.coords.latitude);
         let animal = document.getElementById("animal")
         animal.setAttribute('gps-entity-place',"longitude: "+position.coords.longitude+"; latitude: "+position.coords.latitude)
       }
